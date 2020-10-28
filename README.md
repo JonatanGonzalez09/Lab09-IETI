@@ -1,3 +1,20 @@
+# Lab09-IETI - Escuela Colombiana de Ingenieria Julio Garavito 
+
+## Autor: ##
+**Jonatan Esteban Gonzalez Rodriguez**
+
+La presencia de este documento en este repositorio es un compromiso explícito de los colaboradores de seguir el siguiente código de honor:
+
+Código de Honor
+------
+Debes seguir el Código de honor del ingeniero de sistemas para defender el estándar de integridad académica de la ECI:
+
+- Tus respuestas a tareas, cuestionarios y exámenes deben ser tu propio trabajo (excepto para las tareas que permiten explícitamente la colaboración).
+
+- No puedes compartir tus soluciones de tareas, cuestionarios o exámenes con otra persona a menos que el instructor lo permita explícitamente. Esto incluye cualquier cosa escrita por ti, como también cualquier solución oficial proporcionada por el docente o el monitor del curso.
+
+- No puedes participar en otras actividades que mejorarán de manera deshonesta tus resultados o que mejorarán de manera deshonesta o dañarán los resultados de otras personas.
+
 # 2.3 JPA with MongoDB
 Create a Spring Boot Application that connects with MongoDB.
 
@@ -59,11 +76,17 @@ Create a Spring Boot Application that connects with MongoDB.
 6. Run the project and verify that the connection to the database works properly. Answer the following questions:
 
 - How many customers were created in the database?
+**Respuesta:**_2 customer uno para la conexion del mongoDB y el otro para el cluster._
 - Where is the *findAll* method implemented?
+**Respuesta:**_Retorna todos los elementos que se encuentren en el repositorio._
 - Suppose you have more than 1000 products in your database. How would you implement a method for supporting pagination and return pages of 50 products to your frontend?
+**Respuesta:**_Se utiliza la interfaz Pageable y se implementa una clase PageRequest la cual tendra un valor final el cual sera 50 que en este caso son los productos que queremos por pagina._
 - How many products contain the "plus" word in their description?
+**Respuesta:**_4 productos_
 - How many products are returned by the *findByDescriptionContaining* query? Why?
+**Respuesta:**_Retorna 2_
 - Which are the collection names where the objects are stored? Where are those names assigned?
+**Respuesta:**_Las collecciones son manejadas por cada Repositorio especifico, los nombres son asignados por defecto segun el model del Repositorio._
 
 5. Create two more models (User and Todo) with the following structure:
 

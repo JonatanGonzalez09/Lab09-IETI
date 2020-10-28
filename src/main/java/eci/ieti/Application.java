@@ -19,6 +19,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
 
@@ -105,6 +106,7 @@ public class Application implements CommandLineRunner {
         todoRepository.save(new Todo("View Show", 1, "Oct - 16 - 2020", "jobs@natural.com", "done"));
         todoRepository.save(new Todo("View Close", 2, "Nov - 17 - 2020", "steve@natural.com", "in progress"));
         todoRepository.save(new Todo("View Story - Esta descripcion contiene mas de treinta caracateres, para la prueba de la ultima consulta", 3, "Dec - 18 - 2020", "rouse@natural.com", "pending"));
+        todoRepository.save(new Todo("Travel to Galapagos", 4, "Jan - 10 - 2019", "charles@natural.com", "done"));
 
         System.out.println("Users found with findByResponsible():");
         System.out.println("-------------------------------");
@@ -151,13 +153,24 @@ public class Application implements CommandLineRunner {
         List<Todo> tasksAssignedPriority = mongoOperation.find(query2, Todo.class);
 
         //Users that have assigned more than 2 Todos.
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.group("responsible").count().as("count"),
+                Aggregation.match(Criteria.where("count").gt(2)),
+                Aggregation.project("_id"));
+        List<Todo> moreAssignes = mongoOperation.aggregate(agg, "todo", Todo.class).getMappedResults();
 
         //Todos that contains a description with a length greater than 30 characters
+        agg = Aggregation.newAggregation(
+                Aggregation.project("_id", "description", "priority", "dueDate", "responsible", "status").andExpression("strLenCP(description)").as("strLength"),
+                Aggregation.match(Criteria.where("strLength").gt(30)));
+        List<Todo> greaterDescription = mongoOperation.aggregate(agg, "todo", Todo.class).getMappedResults();
 
 
-        System.out.println("Number of customers = " + customer.size());
+        /* System.out.println("Number of customers = " + customer.size());
         System.out.println("Number of tasks expired = " + task_Expired.size());
         System.out.println("Number of tasks assigned and priority > 5 = " + tasksAssignedPriority.size());
+        System.out.println("Users that have assigned more than 2 Todos = " + moreAssignes.size());
+        System.out.println("Users that have assigned more than 2 Todos = " + greaterDescription.size()); */
         
     }
 
